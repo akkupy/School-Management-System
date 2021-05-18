@@ -5,6 +5,20 @@ import sys
 import mysql.connector as msc
 
 
+
+
+#     __       _       _           
+#    /  \     | |     | | 
+#   /    \    | | /\  | | /\   _   _
+#  /  /\  \   | |/ /  | |/ /  | | | |  
+# /  ____  \  | |\ \  | |\ \  | |_| |
+#/__/    \__\ |_| \_\ |_| \_\  \___/
+#
+# Copyright of Akash, 2021          
+# https://www.github.com/AkkuPY     
+# https://t.me/Akku_Legend   
+
+
 # Def1:SPACE
 def Enter():
     print()
