@@ -15,7 +15,7 @@ import mysql.connector as msc
 #/__/    \__\ |_| \_\ |_| \_\  \___/
 #
 # Copyright of Akash, 2021          
-# https://www.github.com/AkkuPY     
+# https://www.github.com/akkupy   
 # https://t.me/Akku_Legend   
 
 
