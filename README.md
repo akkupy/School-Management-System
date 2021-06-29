@@ -5,5 +5,5 @@
 
 # Requirements
  * MySQL Database
- * A Python IDLE
+ * A Python IDE
  
