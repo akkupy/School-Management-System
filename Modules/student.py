@@ -1,6 +1,6 @@
 from .assets import *
 # Def3:STUDENT MAIN MENU
-def Student():
+def Student(mycursor,lib):
     while True:
         Enter()
         Star()
@@ -16,18 +16,18 @@ def Student():
         q = Choice("\tEnter a Choice(1,2,3,4,5 ):", [1, 2, 3, 4, 5])
         if q == 1:
             # Def6
-            r = Addstudent()
+            r = Addstudent(mycursor,lib)
             if r == 1:
                 break
         elif q == 2:
             # Def7
-            Displaystudent()
+            Displaystudent(mycursor)
         elif q == 3:
             # Def8
-            EditStudent()
+            EditStudent(mycursor,lib)
         elif q == 4:
             # Def9
-            Removestudent()
+            Removestudent(mycursor,lib)
         else:
             break
 
@@ -35,7 +35,7 @@ def Student():
 
 
 # Def6:ADD STUDENT MENU
-def Addstudent():
+def Addstudent(mycursor,lib):
     Enter()
     Star()
     Enter()
@@ -99,7 +99,7 @@ def Addstudent():
 
 
 # Def7:DISPLAY STUDENT MENU
-def Displaystudent():
+def Displaystudent(mycursor):
     def u1():
         mycursor.execute("select * from Students")
         Enter()
@@ -181,7 +181,7 @@ def Displaystudent():
 
 
 # Def8:EDIT STUDENT MENU
-def EditStudent():
+def EditStudent(mycursor,lib):
     Enter()
     mycursor.execute("select * from Students")
     print("\t\t", "-" * 13)
@@ -197,14 +197,14 @@ def EditStudent():
     for i in mycursor:
         eh.append(i[0])
     if p in eh:
-        EditStudent2(p)
+        EditStudent2(p,mycursor,lib)
     else:
         print("Enter A Valid Admission No:")
         EditStudent()
 
 
 # Def8.1:EDIT STUDENT MENU 2
-def EditStudent2(p):
+def EditStudent2(p,mycursor,lib):
     Enter()
     Star()
     Enter()
@@ -344,7 +344,7 @@ def EditStudent2(p):
 
 
 # Def9:REMOVE STUDENT MENU
-def Removestudent():
+def Removestudent(mycursor,lib):
     Enter()
     g = input("\tEnter the Admission No:")
     try:

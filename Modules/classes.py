@@ -1,6 +1,6 @@
 from .assets import *
 # Def5:CLASS MAIN MENU
-def Class():
+def Class(mycursor,lib):
     while True:
         Enter()
         Star()
@@ -16,21 +16,21 @@ def Class():
         q = Choice("\tEnter a Choice(1,2,3,4,5):", [1, 2, 3, 4, 5])
         if q == 1:
             # Def14
-            AddClass()
+            AddClass(mycursor,lib)
         elif q == 2:
             # Def15
-            DisplayClass()
+            DisplayClass(mycursor)
         elif q == 3:
             # Def16
-            EditClass()
+            EditClass(mycursor,lib)
         elif q == 4:
             # Def17
-            RemoveClass()
+            RemoveClass(mycursor,lib)
         else:
             break
 
 # Def14:ADD CLASS MENU
-def AddClass():
+def AddClass(mycursor,lib):
     Enter()
     Star()
     Enter()
@@ -78,7 +78,7 @@ def AddClass():
 
 
 # Def15:DISPLAY CLASS MENU
-def DisplayClass():
+def DisplayClass(mycursor):
     def c1():
         mycursor.execute("select * from Class")
         Enter()
@@ -146,7 +146,7 @@ def DisplayClass():
 
 
 # Def16:EDIT CLASS MENU
-def EditClass():
+def EditClass(mycursor,lib):
     Enter()
     Enter()
     mycursor.execute("select * from Class")
@@ -164,14 +164,14 @@ def EditClass():
     for i in mycursor:
         eh.append(i[0])
     if p in eh:
-        EditClass2(p)
+        EditClass2(p,mycursor,lib)
     else:
         print("Enter A Valid Class ID:")
         EditClass()
 
 
 # Def16.1:EDIT CLASS MENU 2
-def EditClass2(p):
+def EditClass2(p,mycursor,lib):
     Enter()
     Star()
     Enter()
@@ -339,7 +339,7 @@ def EditClass2(p):
 
 
 # Def17:REMOVE CLASS MENU
-def RemoveClass():
+def RemoveClass(mycursor,lib):
     Enter()
     g = Checker("\tEnter the Class ID:", "int")
     lk = []

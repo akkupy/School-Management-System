@@ -1,6 +1,6 @@
 from .assets import *
 # Def4:TEACHER MAIN MENU
-def Teachers():
+def Teachers(mycursor,lib):
     while True:
         Enter()
         Star()
@@ -16,24 +16,24 @@ def Teachers():
         q = Choice("\tEnter a Choice(1,2,3,4,5 ):", [1, 2, 3, 4, 5])
         if q == 1:
             # Def10
-            r = Addteachers()
+            r = Addteachers(mycursor,lib)
             if r == 1:
                 break
         elif q == 2:
             # Def11
-            Displayteachers()
+            Displayteachers(mycursor)
         elif q == 3:
             # Def12
-            EditTeacher()
+            EditTeacher(mycursor,lib)
         elif q == 4:
             # Def13
-            RemoveTeacher()
+            RemoveTeacher(mycursor,lib)
         else:
             break
 
 
 # Def10:ADD TEACHERS MENU
-def Addteachers():
+def Addteachers(mycursor,lib):
     Enter()
     Star()
     Enter()
@@ -94,7 +94,7 @@ def Addteachers():
 
 
 # Def11:DISPLAY TEACHERS MENU
-def Displayteachers():
+def Displayteachers(mycursor):
     def b1():
         mycursor.execute("select * from Teachers")
         Enter()
@@ -145,7 +145,7 @@ def Displayteachers():
 
 
 # Def12:EDIT TEACHERS MENU
-def EditTeacher():
+def EditTeacher(mycursor,lib):
     Enter()
     Enter()
     mycursor.execute("select * from Teachers")
@@ -163,14 +163,14 @@ def EditTeacher():
     for i in mycursor:
         eh.append(i[0])
     if p in eh:
-        EditTeacher2(p)
+        EditTeacher2(p,mycursor,lib)
     else:
         print("Enter A Valid Teacher's ID:")
         EditTeacher()
 
 
 # Def12.1:EDIT TEACHERS MENU 2
-def EditTeacher2(p):
+def EditTeacher2(p,mycursor,lib):
     Enter()
     Star()
     Star()
@@ -310,7 +310,7 @@ def EditTeacher2(p):
 
 
 # Def13:REMOVE TEACHERS MENU
-def RemoveTeacher():
+def RemoveTeacher(mycursor,lib):
     Enter()
     g = input("Enter the Teacher's ID:")
     try:

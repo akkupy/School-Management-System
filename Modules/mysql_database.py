@@ -1,6 +1,7 @@
+import sys,mysql.connector as msc
 from .assets import *
 # Def18:TABLE CREATION
-def create_table():
+def create_table(y,z):
     mydb = msc.connect(host="localhost", user="root", passwd=y, database=z)
     mycursor = mydb.cursor()
     Enter()
@@ -36,7 +37,7 @@ def create_table():
 
 
 # Def19:LISTING THE DATABASES
-def list_database():
+def list_database(y):
     try:
         mydb = msc.connect(host="localhost", user="root",
                            password=y)
@@ -62,7 +63,7 @@ def list_database():
 
 
 # Def20:CREATING A NEW DATABASE
-def create_database():
+def create_database(y):
     try:
         mydb = msc.connect(host="localhost", user="root",
                            password=y)
