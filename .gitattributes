@@ -1,3 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-!**/__pycache__/
+__pycache__
+*.pyc
