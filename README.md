@@ -7,6 +7,10 @@
 # Requirements
  * [MySQL Database](https://www.mysql.com/downloads/)
  * Install the modules in requirements.txt
+   ```
+   [+] Open Cmd on the root directory.
+    pip install -r requirements.txt
+    ```
  
 # Procedure
  * Run the main.py file.
