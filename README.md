@@ -17,5 +17,5 @@
 # Listen A Sec
  * Feel free to report any bugs!
  * Star if you like it:)
- * Can be used as small school project,etc.
+ * Can be used as school project,etc.
  
