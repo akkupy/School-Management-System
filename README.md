@@ -6,7 +6,7 @@
 
 # Requirements
  * [MySQL Database](https://www.mysql.com/downloads/)
- * A Python IDE
+ * Install the modules in requirements.txt
  
 # Procedure
  * Run the main.py file.
