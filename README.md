@@ -16,5 +16,7 @@
  * Run the main.py file.
 
 # Listen A Sec
- * Pull A Req if you find any bug.
+ * Feel free to report any bugs!
+ * Star if you like it:)
+ * Can be used as small school project,etc.
  
