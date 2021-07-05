@@ -5,7 +5,8 @@
 
 
 # Requirements
- * MySQL Database
+ *[![mysql](https://github.com/akkupy/School-Management-System/blob/main/Readme%20files/mysql.png?raw=truelink=https://akkupy.github.io/)]
+ * MySQL Database[https://github.com/akkupy/School-Management-System/blob/main/Readme%20files/mysql.png?raw=true](https://www.mysql.com/downloads/)
  * A Python IDE
  
 # Procedure
