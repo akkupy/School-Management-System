@@ -7,6 +7,9 @@
 # Requirements
  * MySQL Database
  * A Python IDE
+ 
+# Procedure
+ * Run the main.py file.
 
 # Listen A Sec
  * Pull A Req if you find any bug.
