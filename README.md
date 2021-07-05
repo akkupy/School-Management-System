@@ -9,7 +9,7 @@
  * Install the modules in requirements.txt
    ```
    [+] Open CMD on the root directory and run the following
-    [-] pip install -r requirements.txt
+        [-] pip install -r requirements.txt
     ```
  
 # Procedure
