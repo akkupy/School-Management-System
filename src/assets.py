@@ -1,3 +1,5 @@
+from rich import print as rprint
+
 # Def1:SPACE
 def Enter():
     print()
@@ -24,25 +26,19 @@ def Checker(a, b='akku'):
             return Checker(a, b)
 
 
-# Def 23:CHOICES RETRIEVAL CHECKING
-def Choice(a, b):
-    abc = ' '
+# Choice Picker
+def Choice(inputString: str, inputRange: list):
     try:
         Enter()
-        pk = int(input(a))
-        if pk in b:
-            abc = pk
-            return abc
+        rprint(inputString)
+        inputChoice = int(input(':'))
+        if inputChoice in inputRange:
+            return inputChoice
         else:
             Enter()
-            print("\tEnter A Number As Per Instruction")
-            Enter()
-            Lag()
-            Enter()
-            return Choice(a, b)
+            rprint(f"[bold red]ERROR : Enter the choice from {inputRange}")
+            return Choice(inputString, inputRange)
     except:
         Enter()
-        print("\tEnter A Digit As Per Instruction")
-        Enter()
-        Lag()
-        return Choice(a, b)
+        rprint(f"[bold red]ERROR : Enter the choice from {inputRange}")
+        return Choice(inputString, inputRange)

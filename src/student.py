@@ -1,37 +1,37 @@
 from .assets import *
-# Def3:STUDENT MAIN MENU
-def Student(mycursor,lib):
+from rich import print as rprint
+from rich.table import Table
+from time import sleep
+
+# STUDENT MAIN MENU
+def Student(cursor,connection,console):
     while True:
+
         Enter()
-        Star()
-        Enter()
-        print("\t\t\t STUDENTS")
-        print("\t\t\t ********")
-        print("\t\t 1.ADD A STUDENT")
-        print("\t\t 2.DISPLAY STUDENTS")
-        print("\t\t 3.EDIT THE DETAILS")
-        print("\t\t 4.REMOVE A STUDENT")
-        print("\t\t 5.BACK(MAIN MENU)")
-        Enter()
-        q = Choice("\tEnter a Choice(1,2,3,4,5 ):", [1, 2, 3, 4, 5])
-        if q == 1:
-            # Def6
-            r = Addstudent(mycursor,lib)
-            if r == 1:
+        table = Table(title="Students")
+        table.add_column("S. No.", style="cyan", no_wrap=True)
+        table.add_column("Section", style="magenta")
+        table.add_row("1","Add a Student")
+        table.add_row("2","Display Students")
+        table.add_row("3","Edit the Details")
+        table.add_row("4","Remove a Student")
+        table.add_row("5","Go Back (Main Menu)")
+        console.print(table)
+        sectionValue = Choice("Enter a Choice(1,2,3,4,5)", [1, 2, 3, 4, 5])
+
+        match sectionValue:
+            case 1:
+                r = Addstudent(cursor,connection)
+                if r == 1:
+                    break
+            case 2:
+                Displaystudent(cursor)
+            case 3:
+                EditStudent(cursor,connection)
+            case 4:
+                Removestudent(cursor,connection)
+            case 5:
                 break
-        elif q == 2:
-            # Def7
-            Displaystudent(mycursor)
-        elif q == 3:
-            # Def8
-            EditStudent(mycursor,lib)
-        elif q == 4:
-            # Def9
-            Removestudent(mycursor,lib)
-        else:
-            break
-
-
 
 
 # Def6:ADD STUDENT MENU
