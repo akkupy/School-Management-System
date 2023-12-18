@@ -21,7 +21,7 @@ def Student(cursor,connection,console):
 
         match sectionValue:
             case 1:
-                r = Addstudent(cursor,connection)
+                r = Addstudent(cursor,connection,console)
                 if r == 1:
                     break
             case 2:
@@ -35,67 +35,82 @@ def Student(cursor,connection,console):
 
 
 # Def6:ADD STUDENT MENU
-def Addstudent(mycursor,lib):
-    Enter()
-    Star()
-    Enter()
-    lk = []
-    mycursor.execute("select class_id from Class")
-    for i in mycursor:
-        lk.append(i[0])
-    m = Checker("\tEnter the Number of Students to Add:", "int")
-    for i in range(m):
+def Addstudent(cursor,connection,console):
+
+    classes = []
+
+    cursor.execute("select class_id from Class")
+    for i in cursor:
+        classes.append(i[0])
+
+    numberOfStudents = Checker("Enter the Number of Students to Add:", "int")
+
+    for i in range(numberOfStudents):
+  
+        rprint("\n[bold violet]ENTER THE DETAILS OF STUDENTS\n")
+
+        cursor.execute("select * from Students")
+        allStudents = cursor.fetchall()
+
+        defaultAdm = len(allStudents) + 101
+
+        rprint("\nDefault Admission No:", defaultAdm)
+        rprint("\nEnter the Student name(Max 30 Characters)")
+        studentName = input(":")
+        rprint("\nEnter the Date Of Birth(yyyy/mm/dd)")
+        studentDOB = input(":")
+        rprint("\nEnter the Date of Joining(yyyy/mm/dd)")
+        studentDOJ = input(":")
+        rprint("\nEnter the gender(M/F/O)")
+        studentGender = input(":")
+        rprint("\nEnter the Address(Max 50 Characters)")
+        studentAddress = input(":")
+        studentPh = Checker("Enter the Phone Number(10 Digits):", "int")
+
+        cursor.execute("select class,division,class_id from Class")
+
         Enter()
-        Star()
-        Enter()
-        print("\t\tENTER THE DETAILS OF STUDENTS")
-        print("\t\t*****************************")
-        Enter()
-        mycursor.execute("select * from Students")
-        ven = mycursor.fetchall()
-        h = len(ven) + 101
-        print("\tDefault Admission No:", h)
-        b = input("\tEnter the Student name(Max 30 Characters):")
-        c = input("\tEnter the Date Of Birth(yyyy/mm/dd):")
-        d = input("\tEnter the Date of Joining(yyyy/mm/dd):")
-        e = input("\tEnter the gender(M/F/O):")
-        f = input("\tEnter the Address(Max 50 Characters):")
-        g = Checker("\tEnter the Phone Number(10 Digits):", "int")
-        mycursor.execute("select class,division,class_id from Class")
-        print("-" * 50)
-        print("Class\t\tDivision\tClass ID")
-        for i in mycursor:
-            print(i[0], "\t\t", i[1], "\t\t", i[2])
-        print("-" * 50)
-        n = Checker("\tEnter the Class ID(As Per Class):", "int")
-        if n not in lk:
+        table = Table(title="Class")
+        table.add_column("Class", style="cyan", no_wrap=True)
+        table.add_column("Division", style="magenta")
+        table.add_column("Class ID", style="violet")
+        for i in cursor:
+            table.add_row(i[0],i[1],i[2])
+
+        console.print(table)
+
+        classID = Checker("Enter the Class ID(As Per Class):", "int")
+        if classID not in classes:
             Enter()
-            print("\t\tClass Corresponding To The Class ID Is Not Found")
-            print("\t\tCreate The Class Table First!")
-            print("\t\tPLEASE TRY AGAIN")
+            rprint("[bold red]ERROR : Class Corresponding To The Class ID Is Not Found")
+            rprint("[bold green]HINT : Create The Class Table First!")
             Enter()
             Lag()
             return 1
         try:
-            mycursor.execute(
-                "insert into Students values({},'{}','{}','{}','{}','{}',{},{})".format(h, b, c, d, e, f, g, n))
-            lib.commit()
+
+            cursor.execute(
+                "insert into Students values({},'{}','{}','{}','{}','{}',{},{})".format(defaultAdm, studentName, studentDOB, studentDOJ, studentGender, studentAddress, studentPh, classID))
+            connection.commit()
+
             Enter()
-            print("Student Added Successfully")
+            with console.status("[bold green]Adding Details to Database...") as status:
+                sleep(2)
+                console.log(f'[bold][green]Student Details Added Successfully.. ')
             Enter()
             Lag()
             Enter()
+
         except:
             Enter()
-            print("Enter The Values As Per Instructions")
+            rprint("[bold red]ERROR : Invalid Details Entered.")
             Enter()
-            Lag()
-            Enter()
-            yt = Choice("Do You Wish To Retry Or Go Back(Main Menu)  (1/2):", [1, 2])
-            if yt == 1:
-                Addstudent()
-            if yt == 2:
-                Student()
+
+            wish = Choice("Do You Wish To Retry Or Go Back(Main Menu)  (1/2):", [1, 2])
+            if wish == 1:
+                Addstudent(cursor,connection,console)
+            if wish == 2:
+                return 0
 
 
 # Def7:DISPLAY STUDENT MENU

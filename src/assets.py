@@ -12,18 +12,22 @@ def Star():
 
 # Def21:ENTER KEY FUNCTION
 def Lag():
-    input("Press ENTER KEY TO CONTINUE")
+    rprint("Press ENTER KEY TO CONTINUE")
+    input("")
 
 
 # Def22:INTEGER RETREIVAL CHECKING
-def Checker(a, b='akku'):
-    if b == "int":
+def Checker(inputString: str, type: str = 'foo'):
+    if type == "int":
         try:
-            pk = int(input(a))
-            return pk
+            Enter()
+            rprint(inputString)
+            userInput = int(input(':'))
+            return userInput
         except:
-            print("\tEnter As per Instruction")
-            return Checker(a, b)
+            Enter()
+            rprint("[bold red]ERROR : Enter As per Instruction")
+            return Checker(inputString, type)
 
 
 # Choice Picker
