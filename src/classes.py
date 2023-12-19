@@ -71,7 +71,7 @@ def AddClass(cursor,connection,console):
             Enter()
             with console.status("[bold green]Adding Details to Database...") as status:
                 sleep(2)
-                console.log(f'[bold][green]Class Created Added Successfully.. ')
+                console.log(f'[bold][green]Class Created Successfully.. ')
             Enter()
             Lag()
             Enter()
@@ -183,175 +183,93 @@ def EditClass(cursor,connection,console):
         EditClass2(classID,cursor,connection,console)
     else:
         rprint("[bold red]ERROR : Enter A Valid Class ID")
+        Lag()
         return 0
 
 
 
-def EditClass2(p,mycursor,lib):
-    Enter()
-    Star()
-    Enter()
-    print("\t\tWhat Do You Want to Edit")
-    Enter()
-    print("\t 1.Class")
-    print("\t 2.Division")
-    print("\t 3.Class Teacher")
-    print("\t 4.No: of Students")
-    print("\t 5.Subject 1")
-    print("\t 6.Subject 2")
-    print("\t 7.Subject 3")
-    print("\t 8.Subject 4")
-    print("\t 9.Subject 5")
-    print("\t 10.Exit")
-    Enter()
-    v = Choice("Enter Your Choice(1,2,3,4,5,6,7,8,9,10):", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    if v == 1:
-        Enter()
-        d = Checker("\tEnter the Class (Max 2 Digits):", "int")
-        try:
-            mycursor.execute("update  Class set class={}  where class_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tClass Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
+def EditClass2(classID,cursor,connection,console):
 
-    if v == 2:
+    Enter()
+    table = Table(title="Choose What to Edit")
+    table.add_column("S. No.", style="cyan", no_wrap=True)
+    table.add_column("Section", style="magenta")
+    table.add_row("1","Class")
+    table.add_row("2","Division")
+    table.add_row("3","Class Teacher")
+    table.add_row("4","Number Of Students")
+    table.add_row("5","Subject 1")
+    table.add_row("6","Subject 2")
+    table.add_row("7","Subject 3")
+    table.add_row("8","Subject 4")
+    table.add_row("9","Subject 5")
+    table.add_row("10","Exit")
+    console.print(table)
+    sectionValue = Choice("Enter Your Choice(1,2,3,4,5,6,7,8,9,10)", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+    match sectionValue:
+        case 1:
+            value = Checker("Enter the Class (Max 2 Digits)", "int")
+            sqlCol = 'class'
+        case 2:
+            rprint("\nEnter the Division(Max 3 Characters)")
+            value = input(":")
+            sqlCol = 'division'
+        case 3:
+            rprint("\nEnter the Class Teacher(Max 20 Characters)")
+            value = input(":")
+            sqlCol = 'class_teacher'
+        case 4:
+            value = Checker("Enter the No: of Students(Max 3 Digits)", "int")
+            sqlCol = 'no_of_students'
+        case 5:
+            rprint("\nEnter the Subject 1(Max 20 Characters)")
+            value = input(":")
+            sqlCol = 'subject1'
+        case 6:
+            rprint("\nEnter the Subject 2(Max 20 Characters)")
+            value = input(":")
+            sqlCol = 'subject2'
+        case 7:
+            rprint("\nEnter the Subject 3(Max 20 Characters)")
+            value = input(":")
+            sqlCol = 'subject3'
+        case 8:
+            rprint("\nEnter the Subject 4(Max 20 Characters)")
+            value = input(":")
+            sqlCol = 'subject4'
+        case 9:
+            rprint("\nEnter the Subject 5(Max 20 Characters)")
+            value = input(":")
+            sqlCol = 'subject5'
+        case 10:
+            return 0
+        
+    try:
+        if type(value) is int:
+            query = f"update Class set {sqlCol}={value} where class_id={classID}"
+            cursor.execute(query)
+        else:
+            query = f"update Class set {sqlCol}='{value}' where class_id={classID}"
+            cursor.execute(query)
+        connection.commit()
+
         Enter()
-        d = input("\tEnter the Division(Max 3 Characters):")
-        try:
-            mycursor.execute("update  Class set division='{}'  where class_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tDivision Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 3:
+        with console.status("[bold green]Updating Details in Database...") as status:
+            sleep(2)
+            console.log(f'[bold][green]Class Updated Successfully.. ')
         Enter()
-        d = input("\tEnter the Class Teacher(Max 20 Characters):")
-        try:
-            mycursor.execute("update  Class set class_teacher='{}'  where class_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tClass Teacher Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 4:
+        Lag()
         Enter()
-        d = Checker("\tEnter the No: of Students(Max 3 Digits):", "int")
-        try:
-            mycursor.execute("update  Class set no_of_students={}  where class_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tNo: of students Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 5:
+
+    except:
+
         Enter()
-        d = input("\tEnter the Subject 1(Max 20 Characters):")
-        try:
-            mycursor.execute("update  Class set subject1='{}'  where class_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tSubject 1 Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 6:
+        rprint("[bold red]ERROR : Invalid Value Entered.")
         Enter()
-        d = input("\tEnter the Subject 2(Max 20 Characters):")
-        try:
-            mycursor.execute("update  Class set subject2='{}'  where class_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tSubject 2 Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 7:
-        Enter()
-        d = input("\tEnter the Subject 3(Max 20 Characters):")
-        try:
-            mycursor.execute("update  Class set subject3='{}'  where class_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tSubject 3 Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 8:
-        Enter()
-        d = input("\tEnter the Subject 4(Max 20 Characters):")
-        try:
-            mycursor.execute("update  Class set subject4='{}'  where class_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tSubject 4 Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 9:
-        Enter()
-        d = input("\tEnter the Subject 5(Max 20 Characters):")
-        try:
-            mycursor.execute("update  Class set subject5='{}'  where class_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tSubject 5 Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 10:
-        Class()
+
+        return 0
+
 
 
 # Def17:REMOVE CLASS MENU
