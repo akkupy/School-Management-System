@@ -106,6 +106,8 @@ def DisplayClass(cursor,console):
         table.add_column("Subject 4", style="magenta")
         table.add_column("Subject 5", style="magenta")
         for i in cursor:
+            if i[0] == 0:
+                continue
             table.add_row(str(i[0]),str(i[1]),i[2],i[3],str(i[4]),i[5],i[6],i[7],i[8],i[9])
         console.print(table)
 
@@ -115,14 +117,16 @@ def DisplayClass(cursor,console):
     def classWithTeacher():
 
         Enter()
-        cursor.execute("select class,division,class_teacher from Class")
+        cursor.execute("select class,division,class_teacher,class_id from Class")
 
         table = Table(title="Display Class With Class Teacher")
         table.add_column("Class", style="magenta")
         table.add_column("Division", style="magenta")
         table.add_column("Class Teacher", style="magenta")
         for i in cursor:
-            table.add_row(str(i[0]),i[1],i[2])
+            if i[3] == 0:
+                continue
+            table.add_row(str(i[3]),str(i[0]),i[1],i[2])
         console.print(table)
 
         Enter()
@@ -132,14 +136,16 @@ def DisplayClass(cursor,console):
     def classWithStudent():
 
         Enter()
-        cursor.execute("select class,division,no_of_students from Class")
+        cursor.execute("select class,division,no_of_students,class_id from Class")
 
         table = Table(title="Display Class With Number OF Students")
         table.add_column("Class", style="magenta")
         table.add_column("Division", style="magenta")
         table.add_column("Number OF Students", style="magenta")
         for i in cursor:
-            table.add_row(str(i[0]),i[1],str(i[2]))
+            if i[3] == 0:
+                continue
+            table.add_row(str(i[3]),str(i[0]),i[1],str(i[2]))
         console.print(table)
 
         Enter()
@@ -179,6 +185,8 @@ def EditClass(cursor,connection,console):
     table.add_column("Class", style="magenta")
     table.add_column("Division", style="magenta")
     for i in cursor:
+        if i[0] == 0:
+            continue
         table.add_row(str(i[0]),str(i[1]),i[2])
     console.print(table)
     
@@ -187,6 +195,8 @@ def EditClass(cursor,connection,console):
     classes = []
     cursor.execute("select * from Class")
     for i in cursor:
+        if i[0] == 0:
+            continue
         classes.append(i[0])
     if classID in classes:
         EditClass2(classID,cursor,connection,console)
@@ -289,6 +299,8 @@ def RemoveClass(cursor,connection,console):
     table.add_column("Class", style="magenta")
     table.add_column("Division", style="magenta")
     for i in cursor:
+        if i[0] == 0:
+                continue
         table.add_row(str(i[0]),str(i[1]),i[2])
     console.print(table)
 
@@ -297,6 +309,8 @@ def RemoveClass(cursor,connection,console):
     classIDList = []
     cursor.execute("select class_id from Class")
     for i in cursor:
+        if i[0] == 0:
+            continue
         classIDList.append(i[0])
     if classID in classIDList:
         try:

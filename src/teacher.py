@@ -39,6 +39,8 @@ def Addteachers(cursor,connection,console):
 
     cursor.execute("select class_id from Class")
     for i in cursor:
+        if i[0] == 0:
+            continue
         classes.append(i[0])
 
     numberOfTeachers = Checker("Enter the Number of Teachers to Add:", "int")
@@ -73,12 +75,14 @@ def Addteachers(cursor,connection,console):
         table.add_column("Division", style="magenta")
         table.add_column("Class ID", style="violet")
         for i in cursor:
+            if i[2] == 0:
+                continue
             table.add_row(str(i[0]),i[1],str(i[2]))
 
         console.print(table)
 
-        classID = Checker("Enter the Class ID(As Per Class):", "int")
-        if classID not in classes:
+        classID = Checker("Enter the Class ID(For Class Teacher, if not enter 0):", "int")
+        if classID not in classes and classID!= 0:
             Enter()
             rprint("[bold red]ERROR : Class Corresponding To The Class ID Is Not Found")
             rprint("[bold green]HINT : Create The Class Table First!")
@@ -86,7 +90,6 @@ def Addteachers(cursor,connection,console):
             Lag()
             return 1
         try:
-
             cursor.execute("insert into Teachers values({},'{}','{}','{}','{}','{}','{}',{})".format(defaultID, teacherName, teacherDept, teacherDOJ, teacherGender, teacherAddress, teacherPh, classID))
             connection.commit()
 
@@ -247,6 +250,8 @@ def EditTeacher2(teachersID,cursor,connection,console):
             table.add_column("Class", style="magenta")
             table.add_column("Division", style="magenta")
             for i in cursor:
+                if i[0] == 0:
+                    continue
                 table.add_row(str(i[0]),str(i[1]),i[2])
             console.print(table)
             
@@ -255,6 +260,8 @@ def EditTeacher2(teachersID,cursor,connection,console):
             classes = []
             cursor.execute("select * from Class")
             for i in cursor:
+                if i[0] == 0:
+                    continue
                 classes.append(i[0])
             sqlCol = 'class_id'
             if value not in classes:
