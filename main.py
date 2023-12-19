@@ -101,7 +101,7 @@ def main():
             case 2:
                 src.Teachers(cursor,connection)
             case 3:
-                src.Class(cursor,connection)
+                src.Class(cursor,connection,console)
             case 4:
                 with console.status("[red bold]Quitting Program....[/red bold]") as status:
                     sleep(3)

@@ -1,31 +1,32 @@
 from .assets import *
+from rich import print as rprint
+from rich.table import Table
+from time import sleep
+
 # Def5:CLASS MAIN MENU
-def Class(mycursor,lib):
+def Class(cursor,connection,console):
     while True:
+
         Enter()
-        Star()
-        Enter()
-        print("\t\t\t CLASS")
-        print("\t\t\t *****")
-        print("\t\t 1.ADD A CLASS")
-        print("\t\t 2.DISPLAY ALL CLASSES")
-        print("\t\t 3.EDIT THE CLASS")
-        print("\t\t 4.REMOVE A CLASS")
-        print("\t\t 5.BACK(MAIN MENU)")
-        Enter()
-        q = Choice("\tEnter a Choice(1,2,3,4,5):", [1, 2, 3, 4, 5])
-        if q == 1:
-            # Def14
-            AddClass(mycursor,lib)
-        elif q == 2:
-            # Def15
-            DisplayClass(mycursor)
-        elif q == 3:
-            # Def16
-            EditClass(mycursor,lib)
-        elif q == 4:
-            # Def17
-            RemoveClass(mycursor,lib)
+        table = Table(title="Class")
+        table.add_column("S. No.", style="cyan", no_wrap=True)
+        table.add_column("Section", style="magenta")
+        table.add_row("1","Add a Class")
+        table.add_row("2","Display all classes")
+        table.add_row("3","Edit the Class")
+        table.add_row("4","Remove a Class")
+        table.add_row("5","Go Back (Main Menu)")
+        console.print(table)
+        sectionValue = Choice("Enter a Choice(1,2,3,4,5)", [1, 2, 3, 4, 5])
+
+        if sectionValue == 1:
+            AddClass(cursor,connection)
+        elif sectionValue == 2:
+            DisplayClass(cursor)
+        elif sectionValue == 3:
+            EditClass(cursor,connection)
+        elif sectionValue == 4:
+            RemoveClass(cursor,connection)
         else:
             break
 
