@@ -109,6 +109,9 @@ def DisplayClass(cursor,console):
             table.add_row(str(i[0]),str(i[1]),i[2],i[3],str(i[4]),i[5],i[6],i[7],i[8],i[9])
         console.print(table)
 
+        Enter()
+        Lag()
+
     def classWithTeacher():
 
         Enter()
@@ -121,6 +124,9 @@ def DisplayClass(cursor,console):
         for i in cursor:
             table.add_row(str(i[0]),i[1],i[2])
         console.print(table)
+
+        Enter()
+        Lag()
 
 
     def classWithStudent():
@@ -135,6 +141,9 @@ def DisplayClass(cursor,console):
         for i in cursor:
             table.add_row(str(i[0]),i[1],str(i[2]))
         console.print(table)
+
+        Enter()
+        Lag()
 
 
     while True:
