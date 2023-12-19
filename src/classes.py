@@ -22,7 +22,7 @@ def Class(cursor,connection,console):
         if sectionValue == 1:
             AddClass(cursor,connection,console)
         elif sectionValue == 2:
-            DisplayClass(cursor)
+            DisplayClass(cursor,console)
         elif sectionValue == 3:
             EditClass(cursor,connection)
         elif sectionValue == 4:
@@ -88,71 +88,74 @@ def AddClass(cursor,connection,console):
             if wish == 2:
                 return 0
 
+def DisplayClass(cursor,console):
+    def allClasses():
 
-# Def15:DISPLAY CLASS MENU
-def DisplayClass(mycursor):
-    def c1():
-        mycursor.execute("select * from Class")
         Enter()
-        print("\t\t\t DISPLAY ALL CLASSES")
-        print("-" * 90)
-        print("Class ID Class\tDivision Class Tr No Of Students  Sub 1  Sub 2  Sub 3  Sub 4     Sub 5")
-        print("-" * 90)
-        for i in mycursor:
-            print(i[0], "\t", i[1], "\t", i[2], "\t", i[3], "\t\t", i[4], "\t ", i[5], "\t", i[6], "\t", i[7], "  ",
-                  i[8], "\t", i[9])
-            print("-" * 90)
-        Enter()
-        Lag()
-        Enter()
+        cursor.execute("select * from Class")
 
-    def c2():
-        mycursor.execute("select class,division,class_teacher from Class")
-        Enter()
-        print("\t\t\t CLASS WITH CLASS TEACHER")
-        print("-" * 30)
-        print("Class\tDivision Class Teacher")
-        print("-" * 30)
-        for i in mycursor:
-            print(i[0], "\t", i[1], "\t", i[2])
-            print("-" * 30)
-        Enter()
-        Lag()
-        Enter()
+        table = Table(title="Display All Classes")
+        table.add_column("Class ID", style="cyan", no_wrap=True)
+        table.add_column("Class", style="magenta")
+        table.add_column("Division", style="magenta")
+        table.add_column("Class Teacher", style="magenta")
+        table.add_column("No: Of Students", style="magenta")
+        table.add_column("Subject 1", style="magenta")
+        table.add_column("Subject 2", style="magenta")
+        table.add_column("Subject 3", style="magenta")
+        table.add_column("Subject 4", style="magenta")
+        table.add_column("Subject 5", style="magenta")
+        for i in cursor:
+            table.add_row(i[0],i[1],i[2],i[3],i[4],i[5],i[6],i[7],i[8],i[9])
+        console.print(table)
 
-    def c3():
-        mycursor.execute("select class,division,no_of_students from Class")
+    def classWithTeacher():
+
         Enter()
-        print("\t\t\t CLASS WITH NUMBER OF STUDENTS")
-        print("-" * 32)
-        print("Class\tDivision No Of Students")
-        print("-" * 32)
-        for i in mycursor:
-            print(i[0], "\t", i[1], "\t", i[2])
-            print("-" * 32)
+        cursor.execute("select class,division,class_teacher from Class")
+
+        table = Table(title="Display Class With Class Teacher")
+        table.add_column("Class", style="magenta")
+        table.add_column("Division", style="magenta")
+        table.add_column("Class Teacher", style="magenta")
+        for i in cursor:
+            table.add_row(i[0],i[1],i[2])
+        console.print(table)
+
+
+    def classWithStudent():
+
         Enter()
-        Lag()
-        Enter()
+        cursor.execute("select class,division,no_of_students from Class")
+
+        table = Table(title="Display Class With Number OF Students")
+        table.add_column("Class", style="magenta")
+        table.add_column("Division", style="magenta")
+        table.add_column("Number OF Students", style="magenta")
+        for i in cursor:
+            table.add_row(i[0],i[1],i[2])
+        console.print(table)
+
 
     while True:
+
         Enter()
-        Star()
-        Enter()
-        print("\t\t\t DISPLAY CLASSES")
-        print("\t\t\t ***************")
-        Enter()
-        print("\t\t 1.DISPLAY ALL CLASSES")
-        print("\t\t 2.DISPLAY CLASS WITH CLASS TEACHER")
-        print("\t\t 3.DISPLAY CLASS WITH NUMBER OF STUDENTS")
-        print("\t\t 4.BACK")
-        Enter()
-        c = Choice("\tEnter a Choice(1,2,3,4)", [1, 2, 3, 4])
-        if c == 1:
-            c1()
-        elif c == 2:
-            c2()
-        elif c == 3:
-            c3()
+        table = Table(title="Display Classes")
+        table.add_column("S. No.", style="cyan", no_wrap=True)
+        table.add_column("Section", style="magenta")
+        table.add_row("1","Display All Classes")
+        table.add_row("2","Display Class With Class Teacher")
+        table.add_row("3","Display Class With Number of Students")
+        table.add_row("4","Back")
+        console.print(table)
+        sectionValue = Choice("Enter a Choice(1,2,3,4)", [1, 2, 3, 4])
+
+        if sectionValue == 1:
+            allClasses()
+        elif sectionValue == 2:
+            classWithTeacher()
+        elif sectionValue == 3:
+            classWithStudent()
         else:
             break
 
