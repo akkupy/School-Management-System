@@ -20,7 +20,7 @@ def Class(cursor,connection,console):
         sectionValue = Choice("Enter a Choice(1,2,3,4,5)", [1, 2, 3, 4, 5])
 
         if sectionValue == 1:
-            AddClass(cursor,connection)
+            AddClass(cursor,connection,console)
         elif sectionValue == 2:
             DisplayClass(cursor)
         elif sectionValue == 3:
@@ -30,52 +30,63 @@ def Class(cursor,connection,console):
         else:
             break
 
-# Def14:ADD CLASS MENU
-def AddClass(mycursor,lib):
-    Enter()
-    Star()
-    Enter()
-    m = Checker("\tEnter the Number of Classes to Add:", "int")
-    Enter()
-    for i in range(m):
-        Enter()
-        Star()
-        Enter()
-        print("\t\tEnter the details of the Class")
-        Enter()
-        mycursor.execute("select * from Class")
-        ven = mycursor.fetchall()
-        h = len(ven) + 1
-        print("\tDefault Class ID:", h)
-        a = Checker("\tEnter the Class(Max 2 Digits):", "int")
-        b = input("\tEnter the Division(Max 3 Characters):")
-        c = input("\tEnter the Class Teacher(Max 20 Characters):")
-        d = Checker("\tEnter the Number Of Students(Max 3 Digits):", "int")
-        e = input("\tEnter Subject 1(Max 20 Characters):")
-        f = input("\tEnter Subject 2(Max 20 Characters):")
-        g = input("\tEnter Subject 3(Max 20 Characters):")
-        k = input("\tEnter Subject 4(Max 20 Characters):")
-        i = input("\tEnter Subject 5(Max 20 Characters):")
+def AddClass(cursor,connection,console):
+
+    numberOfClasses = Checker("Enter the Number of Classes to Add:", "int")
+
+    for i in range(numberOfClasses):
+
+        rprint("\n[bold violet]ENTER THE DETAILS OF THE CLASS\n")
+
+        cursor.execute("select * from Class")
+        allClasses = cursor.fetchall()
+        defaultCLassID = len(allClasses) + 1
+
+
+        rprint("\nDefault Class ID:", defaultCLassID)
+
+        classNum = Checker("Enter the Class(Max 2 Digits):", "int")
+
+        rprint("\nEnter the Division(Max 3 Characters)")
+        classDiv = input(":")
+        rprint("\ntEnter the Class Teacher(Max 20 Characters)")
+        classTeacher = input(":")
+        classNumStudents = Checker("Enter the Number Of Students(Max 3 Digits):", "int")
+        rprint("\nEnter Subject 1(Max 20 Characters)")
+        classSubject1 = input(":")
+        rprint("\nEnter Subject 2(Max 20 Characters)")
+        classSubject2 = input(":")
+        rprint("\nEnter Subject 3(Max 20 Characters)")
+        classSubject3 = input(":")
+        rprint("\nEnter Subject 4(Max 20 Characters)")
+        classSubject4 = input(":")
+        rprint("\nEnter Subject 5(Max 20 Characters)")
+        classSubject5 = input(":")
+        
         try:
-            mycursor.execute(
-                "insert into Class values({},{},'{}','{}',{},'{}','{}','{}','{}','{}')".format(h, a, b, c, d, e, f, g,
-                                                                                               k, i))
-            lib.commit()
+            cursor.execute(
+                "insert into Class values({},{},'{}','{}',{},'{}','{}','{}','{}','{}')".format(defaultCLassID, classNum, classDiv, classTeacher, classNumStudents, classSubject1, classSubject2, classSubject3, classSubject4, classSubject5))
+            connection.commit()
+
             Enter()
-            print("Class Added Successfully")
+            with console.status("[bold green]Adding Details to Database...") as status:
+                sleep(2)
+                console.log(f'[bold][green]Class Created Added Successfully.. ')
             Enter()
             Lag()
             Enter()
+
         except:
-            print("Enter The Values As Per Instructions")
+
             Enter()
-            Lag()
+            rprint("[bold red]ERROR : Invalid Details Entered.")
             Enter()
-            yt = Choice("Do You Wish To Retry Or Go Back(Main Menu)  (1/2):", [1, 2])
-            if yt == 1:
-                AddClass()
-            if yt == 2:
-                Class()
+
+            wish = Choice("Do You Wish To Retry Or Go Back(Main Menu)  (1/2):", [1, 2])
+            if wish == 1:
+                AddClass(cursor,connection,console)
+            if wish == 2:
+                return 0
 
 
 # Def15:DISPLAY CLASS MENU
