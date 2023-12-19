@@ -34,7 +34,6 @@ def Student(cursor,connection,console):
                 break
 
 
-# Def6:ADD STUDENT MENU
 def Addstudent(cursor,connection,console):
 
     classes = []
