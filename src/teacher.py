@@ -1,328 +1,345 @@
 from .assets import *
-# Def4:TEACHER MAIN MENU
-def Teachers(mycursor,lib):
+from rich import print as rprint
+from rich.table import Table
+from time import sleep
+
+def Teachers(cursor,connection,console):
     while True:
+
         Enter()
-        Star()
-        Enter()
-        print("\t\t\t TEACHERS")
-        print("\t\t\t ********")
-        print("\t\t 1.ADD A TEACHER")
-        print("\t\t 2.DISPLAY INFORMATION OF TEACHERS")
-        print("\t\t 3.EDIT THE DETAILS")
-        print("\t\t 4.REMOVE A TEACHER")
-        print("\t\t 5.BACK(MAIN MENU)")
-        Enter()
-        q = Choice("\tEnter a Choice(1,2,3,4,5 ):", [1, 2, 3, 4, 5])
-        if q == 1:
-            # Def10
-            r = Addteachers(mycursor,lib)
-            if r == 1:
+        table = Table(title="Teachers")
+        table.add_column("S. No.", style="cyan", no_wrap=True)
+        table.add_column("Section", style="magenta")
+        table.add_row("1","Add a Teacher")
+        table.add_row("2","Display Information Of Teachers")
+        table.add_row("3","Edit the Details")
+        table.add_row("4","Remove a Teacher")
+        table.add_row("5","Go Back (Main Menu)")
+        console.print(table)
+        sectionValue = Choice("Enter a Choice(1,2,3,4,5)", [1, 2, 3, 4, 5])
+
+        match sectionValue:
+            case 1:
+                r = Addteachers(cursor,connection,console)
+                if r == 1:
+                    break
+            case 2:
+                Displayteachers(cursor,console)
+            case 3:
+                EditTeacher(cursor,connection,console)
+            case 4:
+                RemoveTeacher(cursor,connection,console)
+            case 5:
                 break
-        elif q == 2:
-            # Def11
-            Displayteachers(mycursor)
-        elif q == 3:
-            # Def12
-            EditTeacher(mycursor,lib)
-        elif q == 4:
-            # Def13
-            RemoveTeacher(mycursor,lib)
-        else:
-            break
 
 
-# Def10:ADD TEACHERS MENU
-def Addteachers(mycursor,lib):
-    Enter()
-    Star()
-    Enter()
-    lk = []
-    mycursor.execute("select class_id from Class")
-    for i in mycursor:
-        lk.append(i[0])
-    m = Checker("\tEnter the Number of Teachers to Add:", "int")
-    for i in range(m):
+def Addteachers(cursor,connection,console):
+
+    classes = []
+
+    cursor.execute("select class_id from Class")
+    for i in cursor:
+        classes.append(i[0])
+
+    numberOfTeachers = Checker("Enter the Number of Teachers to Add:", "int")
+
+    for i in range(numberOfTeachers):
+  
+        rprint("\n[bold violet]ENTER THE DETAILS OF TEACHERS\n")
+
+        cursor.execute("select * from Teachers")
+        allTeachers = cursor.fetchall()
+
+        defaultID = len(allTeachers) + 101
+
+        rprint("\nDefault Teacher's ID:", defaultID)
+        rprint("\nEnter the Teacher name(Max 30 Characters)")
+        teacherName = input(":")
+        rprint("\nEnter the Department(Max 20 Characters)")
+        teacherDept = input(":")
+        rprint("\nEnter the Date of Joining(yyyy/mm/dd)")
+        teacherDOJ = input(":")
+        rprint("\nEnter the gender(M/F/O)")
+        teacherGender = input(":")
+        rprint("\nEnter the Address(Max 50 Characters)")
+        teacherAddress = input(":")
+        teacherPh = Checker("Enter the Phone Number(10 Digits):", "int")
+
+        cursor.execute("select class,division,class_id from Class")
+
         Enter()
-        Star()
-        Enter()
-        print("\t\tEnter the details of the Teacher:")
-        mycursor.execute("select * from Teachers")
-        ven = mycursor.fetchall()
-        h = len(ven) + 101
-        print("\tDefault Teacher's ID:", h)
-        b = input("\tEnter the Teacher name(Max 30 Characters):")
-        c = input("\tEnter the Department(Max 20 Characters):")
-        d = input("\tEnter the Date of Joining(yyyy/mm/dd):")
-        e = input("\tEnter the gender(M/F/O):")
-        f = input("\tEnter the Address(Max 50 Characters):")
-        g = input("\tEnter the Phone Number(10 Digits):")
-        mycursor.execute("select class,division,class_id from Class")
-        print("-" * 50)
-        print("Class\t\tDivision\tClass ID")
-        for i in mycursor:
-            print(i[0], "\t\t", i[1], "\t\t", i[2])
-        print("-" * 50)
-        w = Checker("\tEnter the Class Teacher Class ID(As Per Class):", "int")
-        if w not in lk:
+        table = Table(title="Class")
+        table.add_column("Class", style="cyan", no_wrap=True)
+        table.add_column("Division", style="magenta")
+        table.add_column("Class ID", style="violet")
+        for i in cursor:
+            table.add_row(str(i[0]),i[1],str(i[2]))
+
+        console.print(table)
+
+        classID = Checker("Enter the Class ID(As Per Class):", "int")
+        if classID not in classes:
             Enter()
-            print("\t\tClass Corresponding To The Class ID Is Not Found")
-            print("\t\tCreate The Class Table First!")
-            print("\t\tPLEASE TRY AGAIN")
+            rprint("[bold red]ERROR : Class Corresponding To The Class ID Is Not Found")
+            rprint("[bold green]HINT : Create The Class Table First!")
             Enter()
             Lag()
             return 1
         try:
-            mycursor.execute(
-                "insert into Teachers values({},'{}','{}','{}','{}','{}','{}',{})".format(h, b, c, d, e, f, g, w))
-            lib.commit()
+
+            cursor.execute("insert into Teachers values({},'{}','{}','{}','{}','{}','{}',{})".format(defaultID, teacherName, teacherDept, teacherDOJ, teacherGender, teacherAddress, teacherPh, classID))
+            connection.commit()
+
             Enter()
-            print("Teacher added successfully")
+            with console.status("[bold green]Adding Details to Database...") as status:
+                sleep(2)
+                console.log(f'[bold][green]Teacher\'s Details Added Successfully.. ')
             Enter()
             Lag()
             Enter()
+
         except:
-            print("Enter The Values As Per Instructions")
             Enter()
-            Lag()
+            rprint("[bold red]ERROR : Invalid Details Entered.")
             Enter()
-            yt = Choice("Do You Wish To Retry Or Go Back(Main Menu)  (1/2):", [1, 2])
-            if yt == 1:
-                Addteachers()
-            if yt == 2:
-                Teachers()
 
+            wish = Choice("Do You Wish To Retry Or Go Back(Main Menu)  (1/2):", [1, 2])
+            if wish == 1:
+                Addteachers(cursor,connection,console)
+            if wish == 2:
+                return 0
 
-# Def11:DISPLAY TEACHERS MENU
-def Displayteachers(mycursor):
-    def b1():
-        mycursor.execute("select * from Teachers")
+def Displayteachers(cursor,console):
+    def allTeachers():
+
         Enter()
-        print("\t\t\t ALL DETAILS OF TEACHERS")
-        print("-" * 112)
-        print("Teacher's ID\tTeacher's Name\tDepartment\tDate Of Joining\tGender\tAddress\t\tPh Number\tClass ID")
-        print("-" * 112)
-        for i in mycursor:
-            print(i[0], "\t\t", i[1], "\t\t", i[2], "\t\t", i[3], "\t", i[4], "\t", i[5], "     ", i[6], "    ", i[7])
-            print("-" * 112)
+        cursor.execute("select * from Teachers")
+
+        table = Table(title="Display All Details Of The Teachers")
+        table.add_column("Teacher's ID", style="cyan", no_wrap=True)
+        table.add_column("Teacher Name", style="magenta")
+        table.add_column("Department", style="magenta")
+        table.add_column("Date Of Joining", style="magenta")
+        table.add_column("Gender", style="magenta")
+        table.add_column("Address", style="magenta")
+        table.add_column("Phone Number", style="magenta")
+        table.add_column("Class ID", style="magenta")
+        for i in cursor:
+            table.add_row(str(i[0]),i[1],i[2],str(i[3]),i[4],i[5],str(i[6]),str(i[7]))
+        console.print(table)
+
         Enter()
         Lag()
-        Enter()
 
-    def b2():
-        mycursor.execute(
-            "select t.teachers_name,c.class,c.division from teachers t,class c where t.class_id=c.class_id")
+    def teachersClass():
+
         Enter()
-        print("\t\t\t TEACHER WITH CLASS TEACHER POST")
-        print("-" * 32)
-        print("Teacher Name\tClass\tDivision")
-        print("-" * 32)
-        for i in mycursor:
-            print(i[0], "\t\t", i[1], "\t", i[2])
-            print("-" * 32)
+        cursor.execute("select t.teachers_id,t.teachers_name,c.class,c.division from Teachers t,Class c where t.class_id=c.class_id")
+
+        table = Table(title="Display Teachers With Class Teacher Post")
+        table.add_column("Teacher's ID", style="cyan", no_wrap=True)
+        table.add_column("Teacher Name", style="magenta")
+        table.add_column("Class", style="magenta")
+        table.add_column("Division", style="magenta")
+        for i in cursor:
+            table.add_row(str(i[0]),i[1],str(i[2]),i[3])
+        console.print(table)
+
         Enter()
         Lag()
-        Enter()
+
 
     while True:
+
         Enter()
-        Star()
-        Enter()
-        print("\t\t\t DISPLAY TEACHERS")
-        print("\t\t\t ****************")
-        Enter()
-        print("\t\t 1.DISPLAY ALL DETAILS OF THE TEACHERS")
-        print("\t\t 2.DISPLAY TEACHER WITH CLASS TEACHER POST")
-        print("\t\t 3.BACK")
-        Enter()
-        b = Choice("\tEnter a Choice(1,2,3)", [1, 2, 3])
-        if b == 1:
-            b1()
-        elif b == 2:
-            b2()
+        table = Table(title="Display Teachers")
+        table.add_column("S. No.", style="cyan", no_wrap=True)
+        table.add_column("Section", style="magenta")
+        table.add_row("1","Display All The Details Of The Teachers")
+        table.add_row("2","Display Teacher With Class Teacher Post")
+        table.add_row("3","Back")
+        console.print(table)
+        sectionValue = Choice("Enter a Choice(1,2,3)", [1, 2, 3])
+
+        if sectionValue == 1:
+            allTeachers()
+        elif sectionValue == 2:
+            teachersClass()
         else:
             break
 
 
-# Def12:EDIT TEACHERS MENU
-def EditTeacher(mycursor,lib):
+def EditTeacher(cursor,connection,console):
+
     Enter()
+    cursor.execute("select * from Teachers")
+
+    table = Table(title="Display All Teachers")
+    table.add_column("Teacher's ID:", style="cyan", no_wrap=True)
+    table.add_column("Teacher Name", style="magenta")
+    for i in cursor:
+        table.add_row(str(i[0]),i[1])
+    console.print(table)
+    
+    teachersID = Checker("Enter the Teacher's ID:", "int")
     Enter()
-    mycursor.execute("select * from Teachers")
-    print("\t\t", "-" * 13)
-    print("\t\tTeacher's ID:")
-    print("\t\t", "-" * 13)
-    for i in mycursor:
-        print("\t\t", i[0])
-    print("\t\t", "-" * 13)
-    Enter()
-    p = Checker("\tEnter the Teacher's ID:", "int")
-    Enter()
-    eh = []
-    mycursor.execute("select * from Teachers")
-    for i in mycursor:
-        eh.append(i[0])
-    if p in eh:
-        EditTeacher2(p,mycursor,lib)
+    teachers = []
+    cursor.execute("select * from Teachers")
+    for i in cursor:
+        teachers.append(i[0])
+    if teachersID in teachers:
+        EditTeacher2(teachersID,cursor,connection,console)
     else:
-        print("Enter A Valid Teacher's ID:")
-        EditTeacher()
+        rprint("[bold red]ERROR : Enter A Valid Teacher's ID")
+        Lag()
+        return 0
 
 
-# Def12.1:EDIT TEACHERS MENU 2
-def EditTeacher2(p,mycursor,lib):
-    Enter()
-    Star()
-    Star()
-    print("\t\tWhat Do You Want to Edit")
-    Enter()
-    print("\t 1.Teachers Name")
-    print("\t 2.Department")
-    print("\t 3.Date of Joining")
-    print("\t 4.Gender")
-    print("\t 5.Address")
-    print("\t 6.Phone Number")
-    print("\t 7.Class ID")
-    print("\t 8.Exit")
-    Enter()
-    v = Choice("Enter Your Choice(1,2,3,4,5,6,7,8):", [1, 2, 3, 4, 5, 6, 7, 8])
-    if v == 1:
-        Enter()
-        d = input("\tEnter the Teacher's Name(Max 30 Characters):")
-        try:
-            mycursor.execute("update  Teachers set teachers_name='{}'  where teachers_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tTeacher's Name Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 2:
-        Enter()
-        d = input("\tEnter the Department(Max 20 Characters):")
-        try:
-            mycursor.execute("update  Teachers set department='{}'  where teachers_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tDepartment Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 3:
-        Enter()
-        d = input("\tEnter the Date of Joining(yyyy/mm/dd):")
-        try:
-            mycursor.execute("update  Teachers set date_of_joining='{}'  where teachers_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tDate Of Joining Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 4:
-        Enter()
-        d = input("\tEnter the Gender(M/F/O):")
-        try:
-            mycursor.execute("update  Teachers set gender='{}'  where teachers_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tGender Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 5:
-        Enter()
-        d = input("\tEnter the Address(Max 50 Characters):")
-        try:
-            mycursor.execute("update  Teachers set address='{}'  where teachers_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tAddress Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 6:
-        Enter()
-        d = Checker("\tEnter the Phone Number(10 Digits):", "int")
-        try:
-            mycursor.execute("update  Teachers set ph_no='{}'  where teachers_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tPhone Number Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 7:
-        Enter()
-        mycursor.execute("select class,division,class_id from Class")
-        print("-" * 50)
-        print("Class\t\tDivision\tClass ID")
-        for i in mycursor:
-            print(i[0], "\t\t", i[1], "\t\t", i[2])
-        print("-" * 50)
-        Enter()
-        d = input("\tEnter the Class Teacher Class ID(As Per Class):")
-        try:
-            mycursor.execute("update  Teachers set class_id='{}'  where teachers_id={}".format(d, p))
-            lib.commit()
-            Enter()
-            print("\tClass ID Updated")
-            Enter()
-            Lag()
-            Enter()
-        except:
-            print("Enter The Values As Per Instructions")
-            Enter()
-            Lag()
-            Enter()
-    if v == 8:
-        Teachers()
+
+def EditTeacher2(teachersID,cursor,connection,console):
 
 
-# Def13:REMOVE TEACHERS MENU
-def RemoveTeacher(mycursor,lib):
     Enter()
-    g = input("Enter the Teacher's ID:")
+    table = Table(title="Choose What to Edit")
+    table.add_column("S. No.", style="cyan", no_wrap=True)
+    table.add_column("Section", style="magenta")
+    table.add_row("1","Teacher Name")
+    table.add_row("2","Department")
+    table.add_row("3","Date Of Joining")
+    table.add_row("4","Gender")
+    table.add_row("5","Address")
+    table.add_row("6","Phone Number")
+    table.add_row("7","Class ID")
+    table.add_row("8","Exit")
+    console.print(table)
+    sectionValue = Choice("Enter Your Choice(1,2,3,4,5,6,7,8)", [1, 2, 3, 4, 5, 6, 7, 8])
+
+    match sectionValue:
+        case 1:
+            rprint("\nEnter the Teacher's Name(Max 30 Characters)")
+            value = input(":")
+            sqlCol = 'teachers_name'
+        case 2:
+            rprint("\nEnter the Department(Max 20 Characters)")
+            value = input(":")
+            sqlCol = 'department'
+        case 3:
+            rprint("\nEnter the Date of Joining(yyyy/mm/dd)")
+            value = input(":")
+            sqlCol = 'date_of_joining'
+        case 4:
+            rprint("\nEnter the Gender(M/F/O)")
+            value = input(":")
+            sqlCol = 'gender'
+        case 5:
+            rprint("\nEnter the Address(Max 50 Characters)")
+            value = input(":")
+            sqlCol = 'address'
+        case 6:
+            value = Checker("Enter the Phone Number(10 Digits)", "int")
+            sqlCol = 'ph_no'
+        case 7:
+            Enter()
+            cursor.execute("select * from Class")
+
+            table = Table(title="Display All Classes")
+            table.add_column("Class ID", style="cyan", no_wrap=True)
+            table.add_column("Class", style="magenta")
+            table.add_column("Division", style="magenta")
+            for i in cursor:
+                table.add_row(str(i[0]),str(i[1]),i[2])
+            console.print(table)
+            
+            value = Checker("Enter the Class ID:", "int")
+            Enter()
+            classes = []
+            cursor.execute("select * from Class")
+            for i in cursor:
+                classes.append(i[0])
+            sqlCol = 'class_id'
+            if value not in classes:
+                rprint("[bold red]ERROR : Enter A Valid Class ID")
+                Lag()
+                return 0
+            
+        case 8:
+            return 0
+        
     try:
-        mycursor.execute("delete from Teachers where teachers_id={}".format(g))
-        lib.commit()
+        if type(value) is int:
+            query = f"update  Teachers set {sqlCol}={value}  where teachers_id={teachersID}"
+            cursor.execute(query)
+        else:
+            query = f"update  Teachers set {sqlCol}='{value}'  where teachers_id={teachersID}"
+            cursor.execute(query)
+        connection.commit()
+
         Enter()
-        print("\tRecord With Teacher's ID:", g, " is Deleted")
+        with console.status("[bold green]Updating Details in Database...") as status:
+            sleep(2)
+            console.log(f'[bold][green]Teacher Updated Successfully.. ')
         Enter()
         Lag()
         Enter()
+
     except:
-        print("\tEnter A Valid Teacher's ID!")
+
+        Enter()
+        rprint("[bold red]ERROR : Invalid Value Entered.")
         Enter()
         Lag()
+        return 0
+    
+
+
+def RemoveTeacher(cursor,connection,console):
+
+    Enter()
+    cursor.execute("select * from Teachers")
+
+    table = Table(title="Display All Details Of The Teachers")
+    table.add_column("Teacher's ID", style="cyan", no_wrap=True)
+    table.add_column("Teacher Name", style="magenta")
+    table.add_column("Department", style="magenta")
+    table.add_column("Date Of Joining", style="magenta")
+    table.add_column("Gender", style="magenta")
+    table.add_column("Address", style="magenta")
+    table.add_column("Phone Number", style="magenta")
+    table.add_column("Class ID", style="magenta")
+    for i in cursor:
+        table.add_row(str(i[0]),i[1],i[2],str(i[3]),i[4],i[5],str(i[6]),str(i[7]))
+    console.print(table)
+
+    Enter()
+    teachersID = Checker("Enter the Teacher's ID:", "int")
+    Enter()
+    teachers = []
+    cursor.execute("select * from Teachers")
+    for i in cursor:
+        teachers.append(i[0])
+    if teachersID in teachers:
+        try:
+            cursor.execute("delete from Teachers where teachers_id={}".format(teachersID))
+            connection.commit()
+
+            Enter()
+            with console.status("[bold green]Deleting from Database...") as status:
+                sleep(2)
+                console.log(f'[bold][green]Record With Teacher ID: {teachersID} is Deleted Successfully.. ')
+            Enter()
+            Lag()
+            Enter()
+
+        except:
+            Enter()
+            rprint(f"[bold red]HINT : Enter A Valid Teacher's ID!")
+            Enter()
+            Lag()
+            return 0
+    else:
         Enter()
+        rprint("[bold red]ERROR : Enter A Valid Class ID")
+        Enter()
+        Lag()
+        return 0
+    

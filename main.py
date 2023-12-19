@@ -99,7 +99,7 @@ def main():
             case 1:
                 src.Student(cursor,connection,console)
             case 2:
-                src.Teachers(cursor,connection)
+                src.Teachers(cursor,connection,console)
             case 3:
                 src.Class(cursor,connection,console)
             case 4:
