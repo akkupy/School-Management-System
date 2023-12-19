@@ -49,7 +49,7 @@ def AddClass(cursor,connection,console):
 
         rprint("\nEnter the Division(Max 3 Characters)")
         classDiv = input(":")
-        rprint("\ntEnter the Class Teacher(Max 20 Characters)")
+        rprint("\nEnter the Class Teacher(Max 20 Characters)")
         classTeacher = input(":")
         classNumStudents = Checker("Enter the Number Of Students(Max 3 Digits):", "int")
         rprint("\nEnter Subject 1(Max 20 Characters)")
@@ -106,7 +106,7 @@ def DisplayClass(cursor,console):
         table.add_column("Subject 4", style="magenta")
         table.add_column("Subject 5", style="magenta")
         for i in cursor:
-            table.add_row(i[0],i[1],i[2],i[3],i[4],i[5],i[6],i[7],i[8],i[9])
+            table.add_row(str(i[0]),str(i[1]),i[2],i[3],str(i[4]),i[5],i[6],i[7],i[8],i[9])
         console.print(table)
 
     def classWithTeacher():
@@ -119,7 +119,7 @@ def DisplayClass(cursor,console):
         table.add_column("Division", style="magenta")
         table.add_column("Class Teacher", style="magenta")
         for i in cursor:
-            table.add_row(i[0],i[1],i[2])
+            table.add_row(str(i[0]),i[1],i[2])
         console.print(table)
 
 
@@ -133,7 +133,7 @@ def DisplayClass(cursor,console):
         table.add_column("Division", style="magenta")
         table.add_column("Number OF Students", style="magenta")
         for i in cursor:
-            table.add_row(i[0],i[1],i[2])
+            table.add_row(str(i[0]),i[1],str(i[2]))
         console.print(table)
 
 
