@@ -26,7 +26,7 @@ def Class(cursor,connection,console):
         elif sectionValue == 3:
             EditClass(cursor,connection,console)
         elif sectionValue == 4:
-            RemoveClass(cursor,connection)
+            RemoveClass(cursor,connection,console)
         else:
             break
 
@@ -267,39 +267,52 @@ def EditClass2(classID,cursor,connection,console):
         Enter()
         rprint("[bold red]ERROR : Invalid Value Entered.")
         Enter()
-
+        Lag()
         return 0
 
+def RemoveClass(cursor,connection,console):
 
-
-# Def17:REMOVE CLASS MENU
-def RemoveClass(mycursor,lib):
     Enter()
-    g = Checker("\tEnter the Class ID:", "int")
-    lk = []
-    mycursor.execute("select class_id from Class")
-    for i in mycursor:
-        lk.append(i[0])
-    if g in lk:
+    cursor.execute("select * from Class")
+
+    table = Table(title="Display All Classes")
+    table.add_column("Class ID", style="cyan", no_wrap=True)
+    table.add_column("Class", style="magenta")
+    table.add_column("Division", style="magenta")
+    for i in cursor:
+        table.add_row(str(i[0]),str(i[1]),i[2])
+    console.print(table)
+
+    Enter()
+    classID = Checker("Enter the Class ID", "int")
+    classIDList = []
+    cursor.execute("select class_id from Class")
+    for i in cursor:
+        classIDList.append(i[0])
+    if classID in classIDList:
         try:
-            mycursor.execute("delete from Class where class_id={}".format(g))
-            lib.commit()
+            cursor.execute("delete from Class where class_id={}".format(classID))
+            connection.commit()
+
             Enter()
-            print("Class With Class ID", g, "is Deleted")
+            with console.status("[bold green]Deleting from Database...") as status:
+                sleep(2)
+                console.log(f'[bold][green]Class with ID {classID} is Deleted Successfully.. ')
             Enter()
             Lag()
             Enter()
+
         except:
             Enter()
-            print("Cannot Delete The Class As It Is Used In Other Tables")
+            rprint("[bold red]ERROR : Cannot Delete The Class As It Is Used In Other Tables.")
             Enter()
-            print("Delete All The Records Which Use ", g, " As Class ID From Other Tables")
+            rprint(f"[bold green]HINT : Delete All The Records Which Use {classID} As Class ID From Other Tables")
             Enter()
             Lag()
-            Enter()
+            return 0
     else:
         Enter()
-        print("Enter A Valid Class ID")
+        rprint("[bold red]ERROR : Enter A Valid Class ID")
         Enter()
         Lag()
-        Enter()
+        return 0
