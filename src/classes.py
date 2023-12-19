@@ -24,7 +24,7 @@ def Class(cursor,connection,console):
         elif sectionValue == 2:
             DisplayClass(cursor,console)
         elif sectionValue == 3:
-            EditClass(cursor,connection)
+            EditClass(cursor,connection,console)
         elif sectionValue == 4:
             RemoveClass(cursor,connection)
         else:
@@ -160,32 +160,33 @@ def DisplayClass(cursor,console):
             break
 
 
-# Def16:EDIT CLASS MENU
-def EditClass(mycursor,lib):
+def EditClass(cursor,connection,console):
+
     Enter()
+    cursor.execute("select * from Class")
+
+    table = Table(title="Display All Classes")
+    table.add_column("Class ID", style="cyan", no_wrap=True)
+    table.add_column("Class", style="magenta")
+    table.add_column("Division", style="magenta")
+    for i in cursor:
+        table.add_row(str(i[0]),str(i[1]),i[2])
+    console.print(table)
+    
+    classID = Checker("Enter the Class ID:", "int")
     Enter()
-    mycursor.execute("select * from Class")
-    print("\t\t", "-" * 13)
-    print("\t\tClass ID:")
-    print("\t\t", "-" * 13)
-    for i in mycursor:
-        print("\t\t", i[0])
-    print("\t\t", "-" * 13)
-    Enter()
-    p = int(input("Enter the Class ID:"))
-    Enter()
-    eh = []
-    mycursor.execute("select * from Class")
-    for i in mycursor:
-        eh.append(i[0])
-    if p in eh:
-        EditClass2(p,mycursor,lib)
+    classes = []
+    cursor.execute("select * from Class")
+    for i in cursor:
+        classes.append(i[0])
+    if classID in classes:
+        EditClass2(classID,cursor,connection,console)
     else:
-        print("Enter A Valid Class ID:")
-        EditClass()
+        rprint("[bold red]ERROR : Enter A Valid Class ID")
+        return 0
 
 
-# Def16.1:EDIT CLASS MENU 2
+
 def EditClass2(p,mycursor,lib):
     Enter()
     Star()
