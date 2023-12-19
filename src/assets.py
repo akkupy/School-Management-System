@@ -12,7 +12,7 @@ def Star():
 
 # Def21:ENTER KEY FUNCTION
 def Lag():
-    rprint("Press ENTER KEY TO CONTINUE")
+    rprint("Press ENTER KEY to Continue")
     input("")
 
 
