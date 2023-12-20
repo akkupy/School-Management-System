@@ -145,6 +145,8 @@ def Displayteachers(cursor,console):
         table.add_column("Class", style="magenta")
         table.add_column("Division", style="magenta")
         for i in cursor:
+            if i[2] == 0:
+                continue
             table.add_row(str(i[0]),i[1],str(i[2]),i[3])
         console.print(table)
 

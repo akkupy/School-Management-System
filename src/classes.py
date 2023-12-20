@@ -120,6 +120,7 @@ def DisplayClass(cursor,console):
         cursor.execute("select class,division,class_teacher,class_id from Class")
 
         table = Table(title="Display Class With Class Teacher")
+        table.add_column("Class ID", style="cyan", no_wrap=True)
         table.add_column("Class", style="magenta")
         table.add_column("Division", style="magenta")
         table.add_column("Class Teacher", style="magenta")
@@ -139,6 +140,7 @@ def DisplayClass(cursor,console):
         cursor.execute("select class,division,no_of_students,class_id from Class")
 
         table = Table(title="Display Class With Number OF Students")
+        table.add_column("Class ID", style="cyan", no_wrap=True)
         table.add_column("Class", style="magenta")
         table.add_column("Division", style="magenta")
         table.add_column("Number OF Students", style="magenta")
